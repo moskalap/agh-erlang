@@ -20,6 +20,14 @@ create_monitor()-> #monitor{
   id_count=0
 }.
 
+
+
+add_station(Monitor, Name, Cord) ->
+  case {maps:is_key(Name, Monitor#monitor.by_name), maps:is_key(Cord, Monitor#monitor.by_cord)}  of
+    {true, _} -> Monitor;
+    {_,true}  -> Monitor
+  end;
+
 add_station(Monitor, Name, Cord) -> #monitor{
   by_name = maps:put(Name,Monitor#monitor.id_count,Monitor#monitor.by_name),
   by_cord = maps:put(Cord,Monitor#monitor.id_count,Monitor#monitor.by_name),
@@ -35,13 +43,25 @@ add_station(Monitor, Name, Cord) -> #monitor{
 
 
 
-add_value(Monitor, ID, Date, Type, Value) -> .
-remove_value(Monitor, ID, Date, Type) ->.
-get_one_value(Monitor, ID, Date, Type) ->.
-get_station_mean(Monitor, ID, Type) ->.
-get_daily_mean(Monitor, Type, Date)->.
 
 
+add_value(Monitor, Cord_or_Name, Date, Type, Value) ->
+  ID = get_ID(Cord_or_Name, Monitor),
+  maps:put
+
+  }
+
+
+%remove_value(Monitor, ID, Date, Type) ->.
+%get_one_value(Monitor, ID, Date, Type) ->.
+%get_station_mean(Monitor, ID, Type) ->.
+%get_daily_mean(Monitor, Type, Date)->.
+
+get_ID(Cord_or_Name, Monitor) ->
+  case Cord_or_Name of
+    {_,_} ->maps:get(Cord_or_Name, Monitor#monitor.by_cord);
+      _   ->maps:get(Cord_or_Name, Monitor#monitor.by_name)
+  end.
 
 
 %%%createMonitor/0 - tworzy i zwraca nowy monitor zanieczyszczeń;
