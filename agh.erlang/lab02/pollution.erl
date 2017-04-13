@@ -12,7 +12,7 @@
 -record(measurement, {temperature, date, others}).
 -record(monitor, {by_name, by_cord, stations, id_count}).
 %% API
--export([]).
+-export([create_monitor/0,add_station/3]).
 create_monitor()-> #monitor{
   by_name = maps:new(),
   by_cord = maps:new(),
@@ -25,12 +25,10 @@ create_monitor()-> #monitor{
 add_station(Monitor, Name, Cord) ->
   case {maps:is_key(Name, Monitor#monitor.by_name), maps:is_key(Cord, Monitor#monitor.by_cord)}  of
     {true, _} -> Monitor;
-    {_,true}  -> Monitor
-  end;
-
-add_station(Monitor, Name, Cord) -> #monitor{
+    {_,true}  -> Monitor;
+        _ ->  #monitor{
   by_name = maps:put(Name,Monitor#monitor.id_count,Monitor#monitor.by_name),
-  by_cord = maps:put(Cord,Monitor#monitor.id_count,Monitor#monitor.by_name),
+  by_cord = maps:put(Cord,Monitor#monitor.id_count,Monitor#monitor.by_cord),
   stations = maps:put(Monitor#monitor.id_count, #station{
                                                         geo_cord = Cord,
                                                         name = Name,
@@ -39,17 +37,18 @@ add_station(Monitor, Name, Cord) -> #monitor{
                                                         Monitor#monitor.stations),
   id_count = Monitor#monitor.id_count+1
 
-  }.
-
-
-
-
-
-add_value(Monitor, Cord_or_Name, Date, Type, Value) ->
-  ID = get_ID(Cord_or_Name, Monitor),
-  maps:put
-
   }
+  end.
+
+
+
+
+
+%add_value(Monitor, Cord_or_Name, Date, Type, Value) ->
+ % ID = get_ID(Cord_or_Name, Monitor),
+  %maps:put
+
+%  }
 
 
 %remove_value(Monitor, ID, Date, Type) ->.
