@@ -11,4 +11,3 @@
 
 %% API
 -export([]).
--record(product, {type,name,price,details})
