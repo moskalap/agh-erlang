@@ -1,0 +1,53 @@
+%%%-------------------------------------------------------------------
+%%% @author przemek
+%%% @copyright (C) 2017, <COMPANY>
+%%% @doc
+%%%
+%%% @end
+%%% Created : 31. mar 2017 23:07
+%%%-------------------------------------------------------------------
+-module(pollution).
+-author("przemek").
+-record(station, {geo_cord,name,measurement}).
+-record(measurement, {temperature, date, others}).
+-record(monitor, {by_name, by_cord, stations, id_count}).
+%% API
+-export([]).
+create_monitor()-> #monitor{
+  by_name = maps:new(),
+  by_cord = maps:new(),
+  stations=maps:new(),
+  id_count=0
+}.
+
+add_station(Monitor, Name, Cord) -> #monitor{
+  by_name = maps:put(Name,Monitor#monitor.id_count,Monitor#monitor.by_name),
+  by_cord = maps:put(Cord,Monitor#monitor.id_count,Monitor#monitor.by_name),
+  stations = maps:put(Monitor#monitor.id_count, #station{
+                                                        geo_cord = Cord,
+                                                        name = Name,
+                                                        measurement = []
+                                                        },
+                                                        Monitor#monitor.stations),
+  id_count = Monitor#monitor.id_count+1
+
+  }.
+
+
+
+add_value(Monitor, ID, Date, Type, Value) -> .
+remove_value(Monitor, ID, Date, Type) ->.
+get_one_value(Monitor, ID, Date, Type) ->.
+get_station_mean(Monitor, ID, Type) ->.
+get_daily_mean(Monitor, Type, Date)->.
+
+
+
+
+%%%createMonitor/0 - tworzy i zwraca nowy monitor zanieczyszczeń;
+%%%addStation/3 - dodaje do monitora wpis o nowej stacji pomiarowej (nazwa i współrzędne geograficzne), zwraca zaktualizowany monitor;
+%%%addValue/5 - dodaje odczyt ze stacji (współrzędne geograficzne lub nazwa stacji, data, typ pomiaru, wartość), zwraca zaktualizowany monitor;
+%%%removeValue/4 - usuwa odczyt ze stacji (współrzędne geograficzne lub nazwa stacji, data, typ pomiaru), zwraca zaktualizowany monitor;
+%%%getOneValue/4 - zwraca wartość pomiaru o zadanym typie, z zadanej daty i stacji;
+%%%getStationMean/3 - zwraca średnią wartość parametru danego typu z zadanej stacji;
+%%%getDailyMean/3 - z
